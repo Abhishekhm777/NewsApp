@@ -9,7 +9,7 @@ import {
   UIManager,
 } from 'react-native';
 import React, {useCallback, useState} from 'react';
-import styles from './styles';
+import styles, {ITEM_HEIGHT} from './styles';
 import {fetchTopHeadLines, getNewsFromLocal} from '../utils/apis';
 import NewsCard from './NewsCard';
 import {useSelector} from 'react-redux';
@@ -18,6 +18,7 @@ import {setTopHeadLines} from '../redux/actionCreators/newAppActions';
 const NewsScreen = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
+  const [showMoreBtn, setShowMoreBtn] = useState<boolean>(true);
 
   const topNews: Article[] = useSelector(
     (state: any) => state?.headLines?.headLines,
@@ -59,31 +60,46 @@ const NewsScreen = () => {
       );
       LayoutAnimation.configureNext(layoutAnimConfig);
     },
-    [topNews],
+    [topNews, layoutAnimConfig],
   );
 
   const loadMore = useCallback(() => {
     setLoading(true);
     getNewsFromLocal(page).then(list => {
+      if (list?.length === 0) {
+        setShowMoreBtn(false);
+      }
       setTopHeadLines([...topNews, ...list]);
       setLoading(false);
       setPage(page + 1);
     });
-  }, [topNews]);
+  }, [topNews, page]);
 
-  const renderNewsItem = ({item}: Article) => (
-    <NewsCard item={item} removeItem={removeItem} />
+  const renderNewsItem = useCallback(
+    ({item}: Article) => <NewsCard item={item} removeItem={removeItem} />,
+    [removeItem],
   );
 
-  const itemKeyExtractor = (item: Article, index: Number) =>
-    `${item?.title} + ${index}`;
+  const itemKeyExtractor = useCallback(
+    (item: Article, index: Number) => `${index} + ${item?.url}`,
+    [],
+  );
 
-  const renderFooter = () => {
+  const getItemLayout = (data: Article, index: number) => ({
+    length: ITEM_HEIGHT,
+    offset: ITEM_HEIGHT * index,
+    index,
+  });
+
+  const renderFooter = useCallback(() => {
+    if (!showMoreBtn) {
+      return null;
+    }
     return (
       //Footer View with Load More button
       <View style={styles.footer}>
         <TouchableOpacity
-          activeOpacity={0.9}
+          // activeOpacity={0.1}
           onPress={loadMore}
           //On Click of button load more data
           style={styles.loadMoreBtn}>
@@ -94,13 +110,16 @@ const NewsScreen = () => {
         </TouchableOpacity>
       </View>
     );
-  };
+  }, [showMoreBtn, loadMore, loading]);
 
   return (
     <View style={styles.container}>
       <FlatList
+        removeClippedSubviews
         data={topNews}
         renderItem={renderNewsItem}
+        initialNumToRender={6}
+        getItemLayout={getItemLayout}
         keyExtractor={itemKeyExtractor}
         ListFooterComponent={renderFooter}
         contentContainerStyle={styles.listContainerStyle}

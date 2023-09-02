@@ -1,5 +1,5 @@
 import {View, TouchableOpacity, Image} from 'react-native';
-import React, {PropsWithChildren, useCallback} from 'react';
+import React, {useCallback} from 'react';
 import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
 import styles from './styles';
 import Text from '../utils/customComponents/Text';
@@ -7,7 +7,7 @@ interface Props {
   item: Article;
   removeItem: (item: Article) => void;
 }
-const NewsCard: React.FC<Props> = ({item, removeItem}) => {
+const NewsCard: React.FC<Props> = React.memo(({item, removeItem}) => {
   const deleteArticle = (article: Article) => {
     removeItem(article);
   };
@@ -29,20 +29,16 @@ const NewsCard: React.FC<Props> = ({item, removeItem}) => {
         )}>
         <Image source={{uri: item?.urlToImage}} style={styles.image} />
         <View style={styles.content}>
-          <Text style={styles.title}>{item.title}</Text>
-          {/* <Text style={styles.description}>{item.description}</Text> */}
-          <View style={styles.actions}>
-            <TouchableOpacity onPress={() => {}}>
-              <Text style={styles.pinButton}>Pin</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => {}}>
-              <Text style={styles.deleteButton}>Delete</Text>
-            </TouchableOpacity>
-          </View>
+          <Text numberOfLines={3} style={styles.title}>
+            {item.title}
+          </Text>
+          <Text numberOfLines={2} style={styles.description}>
+            {item.description}
+          </Text>
         </View>
       </Swipeable>
     </GestureHandlerRootView>
   );
-};
+});
 
 export default NewsCard;

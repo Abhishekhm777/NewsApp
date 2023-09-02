@@ -1,12 +1,15 @@
 // eslint-disable-next-line prettier/prettier
 import { StyleSheet } from 'react-native';
 
+export const ITEM_HEIGHT = 260;
+
 const styles = StyleSheet.create({
   container: {
     height: '100%',
   },
   card: {
     // flexDirection: 'row',
+    height: 260,
     backgroundColor: '#fff',
     borderRadius: 8,
     shadowColor: '#000',
@@ -21,15 +24,13 @@ const styles = StyleSheet.create({
     height: 120,
   },
   content: {
-    flex: 1,
     padding: 12,
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
-    // marginBottom: 4,
+    fontWeight: '700',
+    marginBottom: 4,
     color: 'gray',
-    fontFamily: 'Inter-Bold',
   },
   description: {
     fontSize: 14,
