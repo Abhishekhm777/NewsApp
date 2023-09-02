@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 120,
+    resizeMode: 'cover',
   },
   content: {
     padding: 12,
@@ -30,11 +31,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     marginBottom: 4,
-    color: 'gray',
+    color: '#1f1d1a',
   },
   description: {
     fontSize: 14,
-    color: 'gray',
+    color: '#3b3833',
   },
   actions: {
     flexDirection: 'row',
