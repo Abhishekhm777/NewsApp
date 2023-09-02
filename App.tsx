@@ -16,8 +16,8 @@ import {
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import NewsScreen from './src/components/NewsScreen';
-import store from './src/redux/store';
 import {Provider} from 'react-redux';
+import appStore from './src/redux/reducerCreator';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -58,7 +58,7 @@ function App(): JSX.Element {
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <Provider store={store}>
+      <Provider store={appStore}>
         <StatusBar
           barStyle={isDarkMode ? 'light-content' : 'dark-content'}
           backgroundColor={backgroundStyle.backgroundColor}

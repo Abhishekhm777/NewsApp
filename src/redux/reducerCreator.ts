@@ -1,12 +1,11 @@
-import { configureStore, combineReducers } from 'redux';
-import headLineReducer from './reducer/newsHeadLineReducer';
+import { createStore, combineReducers } from 'redux';
+import newsAppHeadlineReducer from './reducer';
 
 import NewsAppStore from './store';
 
-const combinedReducers = combineReducers(headLineReducer);
+const combinedReducers = combineReducers(newsAppHeadlineReducer);
 
-const store = configureStore(combinedReducers);
+const appStore = createStore(combinedReducers);
 
-NewsAppStore.setInstance(store);
-
-export type Store = ReturnType<typeof combinedReducers>;
+NewsAppStore.setInstance(appStore);
+export default appStore;

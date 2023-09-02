@@ -1,32 +1,47 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity, Image} from 'react-native';
 import React, {PropsWithChildren, useCallback} from 'react';
-import {Swipeable} from 'react-native-gesture-handler';
-
+import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
+import styles from './styles';
+import Text from '../utils/customComponents/Text';
 interface Props {
-  item: any;
+  item: Article;
+  removeItem: (item: Article) => void;
 }
-const NewsCard: React.FC<Props> = ({item}) => {
-  const deleteArticle = useCallback(item => {
-    // TODO Remove the item
-  }, []);
+const NewsCard: React.FC<Props> = ({item, removeItem}) => {
+  const deleteArticle = (article: Article) => {
+    removeItem(article);
+  };
 
   const togglePin = useCallback(item => {
     // TODO toggle the pined item
   }, []);
 
   return (
-    <View>
+    <GestureHandlerRootView>
       <Swipeable
+        containerStyle={styles.card}
         renderRightActions={() => (
-          <TouchableOpacity onPress={() => deleteArticle(item)}>
-            <Text>Delete</Text>
+          <TouchableOpacity
+            onPress={() => deleteArticle(item)}
+            style={styles.deleteContainer}>
+            <Text style={styles.deleteButton}>Delete</Text>
           </TouchableOpacity>
         )}>
-        <TouchableOpacity onPress={() => togglePin(item)}>
-          <Text>{item.title}</Text>
-        </TouchableOpacity>
+        <Image source={{uri: item?.urlToImage}} style={styles.image} />
+        <View style={styles.content}>
+          <Text style={styles.title}>{item.title}</Text>
+          {/* <Text style={styles.description}>{item.description}</Text> */}
+          <View style={styles.actions}>
+            <TouchableOpacity onPress={() => {}}>
+              <Text style={styles.pinButton}>Pin</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {}}>
+              <Text style={styles.deleteButton}>Delete</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </Swipeable>
-    </View>
+    </GestureHandlerRootView>
   );
 };
 

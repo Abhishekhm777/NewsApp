@@ -1,8 +1,12 @@
-import { SET_TOP_HEADLINES } from "../actionCreators/newAppActions";
+import { SET_TOP_HEADLINES } from '../actionCreators/newAppActions';
 
-const initialState: any{
-
+interface IHeadlinesInitialState {
+  headLines: Article[] | [];
 }
+
+const initialState: IHeadlinesInitialState = {
+  headLines: [],
+};
 
 type IPayload = string | number | null;
 
@@ -12,10 +16,11 @@ const headLineReducer = (state = initialState, action: IAction<IPayload>) => {
     case `${SET_TOP_HEADLINES}`:
       return {
         ...state,
-        lobbyData: payload,
+        headLines: payload,
       };
+    default:
+      return state;
   }
 };
 
 export default headLineReducer;
-
