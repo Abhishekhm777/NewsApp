@@ -1,20 +1,19 @@
-import {View, TouchableOpacity, Image} from 'react-native';
-import React, {useCallback} from 'react';
-import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
+import { View, TouchableOpacity, Image } from 'react-native';
+import React, { useCallback } from 'react';
+import {
+  GestureHandlerRootView,
+  Swipeable,
+} from 'react-native-gesture-handler';
 import styles from './styles';
 import Text from '../utils/customComponents/Text';
 interface Props {
   item: Article;
   removeItem: (item: Article) => void;
 }
-const NewsCard: React.FC<Props> = React.memo(({item, removeItem}) => {
+const NewsCard: React.FC<Props> = React.memo(({ item, removeItem }) => {
   const deleteArticle = (article: Article) => {
     removeItem(article);
   };
-
-  const togglePin = useCallback(item => {
-    // TODO toggle the pined item
-  }, []);
 
   return (
     <GestureHandlerRootView>
@@ -27,7 +26,7 @@ const NewsCard: React.FC<Props> = React.memo(({item, removeItem}) => {
             <Text style={styles.deleteButton}>Delete</Text>
           </TouchableOpacity>
         )}>
-        <Image source={{uri: item?.urlToImage}} style={styles.image} />
+        <Image source={{ uri: item?.urlToImage }} style={styles.image} />
         <View style={styles.content}>
           <Text numberOfLines={3} style={styles.title}>
             {item.title}

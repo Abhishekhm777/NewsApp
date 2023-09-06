@@ -8,18 +8,19 @@ import {
   Platform,
   UIManager,
 } from 'react-native';
-import React, {useCallback, useState} from 'react';
-import styles, {ITEM_HEIGHT} from './styles';
-import {fetchTopHeadLines, getNewsFromLocal} from '../utils/apis';
+import React, { useCallback, useState } from 'react';
+import styles, { ITEM_HEIGHT } from './styles';
+import { fetchTopHeadLines, getNewsFromLocal } from '../utils/apis';
 import NewsCard from './NewsCard';
-import {useSelector} from 'react-redux';
-import {setTopHeadLines} from '../redux/actionCreators/newAppActions';
+import { useSelector } from 'react-redux';
+import { setTopHeadLines } from '../redux/actionCreators/newAppActions';
 
 const NewsScreen = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(1);
-  const [showMoreBtn, setShowMoreBtn] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false); //loader state
+  const [page, setPage] = useState<number>(1); // page number state
+  const [showMoreBtn, setShowMoreBtn] = useState<boolean>(true); // more buton state
 
+  //getting news list from redux, storing in redux will help us to maintain the state through out app, even if you navigate to different screen
   const topNews: Article[] = useSelector(
     (state: any) => state?.headLines?.headLines,
   );
@@ -32,7 +33,7 @@ const NewsScreen = () => {
     if (topNews?.length === 0) {
       getNewsFromLocal().then(list => setTopHeadLines([...topNews, ...list]));
     }
-  });
+  }, []);
 
   const layoutAnimConfig = {
     duration: 300,
@@ -76,7 +77,7 @@ const NewsScreen = () => {
   }, [topNews, page]);
 
   const renderNewsItem = useCallback(
-    ({item}: Article) => <NewsCard item={item} removeItem={removeItem} />,
+    ({ item }: Article) => <NewsCard item={item} removeItem={removeItem} />,
     [removeItem],
   );
 
@@ -99,7 +100,7 @@ const NewsScreen = () => {
       //Footer View with Load More button
       <View style={styles.footer}>
         <TouchableOpacity
-          // activeOpacity={0.1}
+          activeOpacity={0.1}
           onPress={loadMore}
           //On Click of button load more data
           style={styles.loadMoreBtn}>
